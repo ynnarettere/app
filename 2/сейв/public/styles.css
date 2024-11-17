@@ -1,0 +1,148 @@
+/* Общие стили */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+  }
+  
+  header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 1em 0.5em;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  header nav {
+    margin-top: 10px;
+  }
+  
+  header button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+  }
+  
+  header button:hover {
+    background-color: #d32f2f;
+  }
+  
+  /* Секция карусели */
+  #carousel {
+    display: flex;
+    overflow-x: auto;
+    padding: 20px;
+    gap: 15px;
+  }
+  
+  #carousel > div {
+    flex: 0 0 300px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+  }
+  
+  #carousel img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+  }
+  
+  #carousel h3 {
+    margin: 10px 0 5px;
+  }
+  
+  #carousel p {
+    color: #555;
+  }
+  
+  /* Секция редактирования */
+  #editor {
+    margin: 20px;
+    background: white;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+  }
+  
+  form label {
+    display: block;
+    margin: 10px 0 5px;
+  }
+  
+  form input, form textarea, form button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  form button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+  }
+  
+  form button:hover {
+    background-color: #45a049;
+  }
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 20px;
+    text-align: center;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .carousel {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+    padding: 20px;
+    justify-content: center;
+  }
+  
+  .carousel-item {
+    min-width: 300px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    background-color: white;
+  }
+  
+  .carousel-item img {
+    max-width: 100%;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .carousel-item h3 {
+    margin: 10px 0;
+    font-size: 1.2em;
+  }
+  
+  .carousel-item p {
+    font-size: 0.9em;
+    color: #666;
+  }
+  
