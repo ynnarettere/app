@@ -4,51 +4,49 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Регистрация</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <h1>Регистрация</h1>
-  <form id="registerForm">
+  <form id="register-form">
     <label for="username">Имя пользователя:</label>
-    <input type="text" id="username" name="username" required><br><br>
+    <input type="text" id="username" name="username" required><br>
 
     <label for="password">Пароль:</label>
-    <input type="password" id="password" name="password" required><br><br>
+    <input type="password" id="password" name="password" required><br>
 
     <label for="role">Роль:</label>
     <select id="role" name="role" required>
       <option value="user">Пользователь</option>
       <option value="admin">Администратор</option>
-    </select><br><br>
+    </select><br>
 
     <button type="submit">Зарегистрироваться</button>
   </form>
 
   <script>
-    const registerForm = document.getElementById('registerForm');
-    
-    registerForm.addEventListener('submit', async (event) => {
+    document.getElementById('register-form').addEventListener('submit', function(event) {
       event.preventDefault();
 
       const username = document.getElementById('username').value;
       const password = document.getElementById('password').value;
       const role = document.getElementById('role').value;
 
-      const response = await fetch('http://localhost:3000/register', {
+      fetch('/register', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password, role }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        alert(data.message);
-        window.location.href = 'login.html';  // Перенаправление на страницу входа после успешной регистрации
-      } else {
-        alert('Ошибка: ' + data.message);
-      }
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password, role })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.message) {
+          alert(data.message);
+          window.location.href = '/login';  // Перенаправляем на страницу входа
+        } else {
+          alert(data.error);
+        }
+      })
+      .catch(error => console.error('Ошибка регистрации:', error));
     });
   </script>
 </body>
