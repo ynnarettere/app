@@ -3,17 +3,197 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
-  <link rel="stylesheet" href="/styles.css">
+  <title>Carousel with Time and Currency</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .info-bar {
+      text-align: center;
+      padding: 10px;
+      background-color: #f1f1f1;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 20px;
+    }
+    .info-bar span {
+      display: inline-block;
+      margin: 0 10px;
+      font-size: 18px;
+    }
+    .carousel-container {
+      position: relative;
+      width: 800px;
+      height: 400px;
+      overflow: hidden;
+      margin: 0 auto;
+      border: 1px solid #ccc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f9f9f9;
+    }
+    .carousel-item {
+      display: none;
+      text-align: center;
+    }
+    .carousel-item img {
+      max-width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+    .carousel-item h3 {
+      margin: 10px 0;
+    }
+    .carousel-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px auto;
+      width: 200px;
+    }
+    .form-container {
+      margin: 20px auto;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .form-container input, .form-container button {
+      padding: 10px;
+      font-size: 16px;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Добро пожаловать на Dashboard!</h1>
-    <div id="carousel-container" class="carousel">
-      <!-- Карусель будет заполняться динамически через JS -->
-    </div>
+
+  <!-- Информационная строка -->
+  <div class="info-bar" id="infoBar">
+    <span id="currentTime">Время: --:--</span>
+    <span id="usdRate">USD: --</span>
+    <span id="eurRate">EUR: --</span>
   </div>
 
-  <script src="/dashboard.js"></script>
+  <div class="carousel-container" id="carouselContainer"></div>
+  <div class="carousel-buttons">
+    <button id="prev">Previous</button>
+    <button id="next">Next</button>
+  </div>
+
+  <div class="form-container">
+    <h3>Добавить новый элемент</h3>
+    <input type="text" id="newTitle" placeholder="Название">
+    <input type="text" id="newDescription" placeholder="Описание">
+    <input type="text" id="newImageURL" placeholder="URL изображения">
+    <button id="addNewItemBtn">Добавить</button>
+  </div>
+
+  <div class="form-container">
+    <h3>Редактировать текущий элемент</h3>
+    <input type="text" id="editTitle" placeholder="Название">
+    <input type="text" id="editDescription" placeholder="Описание">
+    <input type="text" id="editImageURL" placeholder="URL изображения">
+    <button id="saveEditBtn">Сохранить изменения</button>
+  </div>
+
+  <script>
+    // Данные для карусели — начальные изображения из папки images
+    let carouselData = [
+      { title: "New-York", description: "Город небоскребов", image: "images/1.jpg" },
+      { title: "Astana", description: "Город возможностей", image: "images/2.jpg" },
+      { title: "Miami", description: "Город развлечений", image: "images/3.jpg" }
+    ];
+
+    let currentIndex = 0; // Индекс текущего элемента
+    const carouselContainer = document.getElementById('carouselContainer');
+
+    // Функция для обновления карусели
+    function updateCarousel() {
+      carouselContainer.innerHTML = ''; // Очищаем контейнер
+
+      carouselData.forEach((item, index) => {
+        const itemElement = document.createElement('div');
+        itemElement.classList.add('carousel-item');
+
+        // Добавляем контент
+        itemElement.innerHTML = `
+          <img src="${item.image}" alt="${item.title}" 
+            onerror="this.src='https://via.placeholder.com/800x400?text=Image+Not+Found'">
+          <h3>${item.title}</h3>
+          <p>${item.description}</p>
+        `;
+
+        // Отображаем только текущий элемент
+        itemElement.style.display = index === currentIndex ? 'block' : 'none';
+        carouselContainer.appendChild(itemElement);
+      });
+    }
+
+    // Навигация по карусели
+    document.getElementById('prev').addEventListener('click', () => {
+      currentIndex = (currentIndex > 0) ? currentIndex - 1 : carouselData.length - 1;
+      updateCarousel();
+    });
+
+    document.getElementById('next').addEventListener('click', () => {
+      currentIndex = (currentIndex < carouselData.length - 1) ? currentIndex + 1 : 0;
+      updateCarousel();
+    });
+
+    // Добавление нового элемента
+    document.getElementById('addNewItemBtn').addEventListener('click', () => {
+      const title = document.getElementById('newTitle').value.trim();
+      const description = document.getElementById('newDescription').value.trim();
+      const imageURL = document.getElementById('newImageURL').value.trim();
+
+      if (title && description && imageURL) {
+        carouselData.push({ title, description, image: imageURL });
+        document.getElementById('newTitle').value = '';
+        document.getElementById('newDescription').value = '';
+        document.getElementById('newImageURL').value = '';
+        updateCarousel(); // Перестраиваем карусель
+      } else {
+        alert('Заполните все поля перед добавлением!');
+      }
+    });
+
+    // Сохранение изменений для текущего элемента
+    document.getElementById('saveEditBtn').addEventListener('click', () => {
+      const title = document.getElementById('editTitle').value.trim();
+      const description = document.getElementById('editDescription').value.trim();
+      const imageURL = document.getElementById('editImageURL').value.trim();
+
+      if (title && description && imageURL) {
+        carouselData[currentIndex] = { title, description, image: imageURL };
+        document.getElementById('editTitle').value = '';
+        document.getElementById('editDescription').value = '';
+        document.getElementById('editImageURL').value = '';
+        updateCarousel(); // Обновляем карусель
+      } else {
+        alert('Заполните все поля перед сохранением!');
+      }
+    });
+
+    // Инициализация карусели
+    updateCarousel();
+
+    // Обновление времени и курсов валют
+    function updateInfoBar() {
+      const timeElement = document.getElementById('currentTime');
+      const usdRateElement = document.getElementById('usdRate');
+      const eurRateElement = document.getElementById('eurRate');
+
+      // Устанавливаем текущее время
+      const now = new Date();
+      timeElement.textContent = `Время: ${now.toLocaleTimeString()}`;
+
+      // Статические курсы валют (можно заменить API)
+      usdRateElement.textContent = "USD: 75.50";
+      eurRateElement.textContent = "EUR: 89.30";
+    }
+
+    // Обновляем информацию каждую секунду
+    setInterval(updateInfoBar, 1000);
+    updateInfoBar(); // Первоначальный вызов
+  </script>
+
 </body>
 </html>
